@@ -1,3 +1,5 @@
+[中文](README.md) | [English](README.en.md)
+
 <div align="center">
 <img src="frontend/public/brand/logo.jpg" alt="知华科技 LOGO" width="120" />
 
@@ -11,6 +13,8 @@
 ## 从方案到可追溯的田间记录
 
 田间品种对比需要把“试验设计”“实际小区”“观测事实”和“修订”联系起来。随意重新排列处理、把缺测填零或覆盖原始测量值，会使后续汇总失去依据。PlotTrial 面向小型种植试验团队、农业技术研究小组及教学试验人员，记录品种处理、完整随机区组布局、指定人员观测和独立数据复核。
+
+系统采用 Java 21／Spring Boot、Vue 3、MySQL 和 Flyway，实现田间试验记录、数据权限与版本追溯。
 
 本版提供记录、授权和描述统计。它不选择最优品种，不提供农药、肥料或栽培建议，不进行显著性检验、方差分析、法定品种申报或自动研究结论。试验方案的科学合理性和真实观测仍由具备相应能力的人员负责。[SARE 的完整随机区组设计介绍](https://www.sare.org/publications/how-to-conduct-research-on-your-farm-or-ranch/basics-of-experimental-design/common-research-designs-for-farmers/)可作为学习参考；本系统不代表该机构认证。
 
@@ -51,25 +55,54 @@
 **登录与用户工作台**
 
 ![登录](docs/screenshots/login.jpg)
+
+登录页面：通过会话认证进入工作空间。
+
 ![观测员工作台](docs/screenshots/observer-home.jpg)
+
+观测员工作台：查看本人被指派的试验与小区。
 
 **方案、小区与观测**
 
 ![试验方案](docs/screenshots/plan.jpg)
+
+试验方案：维护品种处理、对照和数值指标。
+
 ![随机布局](docs/screenshots/plots.jpg)
+
+随机布局：查看冻结的完整随机区组与观测员指派。
+
 ![观测与修订](docs/screenshots/observations.jpg)
+
+观测与修订：登记数值或缺测，追加修订并保留核实历史。
 
 **后台、权限、统计与设置**
 
 ![账号管理](docs/screenshots/users.jpg)
+
+账号管理：维护账号、部门、岗位和启用状态。
+
 ![角色权限](docs/screenshots/roles.jpg)
+
+角色权限：配置接口权限与数据范围。
+
 ![试验统计](docs/screenshots/dashboard.jpg)
+
+试验统计：查看授权范围内的试验进度与描述统计。
+
 ![系统参数](docs/screenshots/settings.jpg)
+
+系统参数：维护工作空间名称、容量等允许调整的设置。
 
 **英文与手机页面**
 
 ![英文界面](docs/screenshots/english.jpg)
+
+英文界面：查看英文操作页面。
+
 ![手机界面](docs/screenshots/mobile.jpg)
+
+手机界面：在窄屏布局中查看和操作试验记录。
 
 ## 技术与工程
 
@@ -105,6 +138,8 @@ docker compose up --build -d --wait
 
 访问 **[http://127.0.0.1:8130/](http://127.0.0.1:8130/)**，登录名 `admin`；密码在本机被忽略的 `.env` 的 `ADMIN_PASSWORD` 中，没有固定公开默认密码。初始化脚本拒绝覆盖已有文件，使用 0600 权限写入独立随机密码。请自行保管。
 
+健康检查：[http://127.0.0.1:8130/actuator/health](http://127.0.0.1:8130/actuator/health)，正常响应包含`"status":"UP"`。
+
 默认端口被占用时在 `.env` 修改 `WEB_PORT=18130`，然后重新启动本项目；不要停止其他项目。普通停止使用 `docker compose down`，保留数据库卷。**`down -v` 会删除当前 Compose 项目的数据库卷，仅限可丢弃验收环境。**
 
 | 配置 | 含义 |
@@ -125,6 +160,11 @@ docker compose up --build -d --wait
 
 ```sh
 mvn -f backend/pom.xml spring-boot:run
+```
+
+另一个终端，在项目根目录使用 Node 24.19.0+／npm 11：
+
+```sh
 cd frontend
 npm ci
 npm run dev
@@ -194,3 +234,5 @@ git diff --check
 | 微信 zhuatech | 微信 zhuatech2 |
 | --- | --- |
 | ![微信 zhuatech 二维码](docs/images/wechat-zhuatech.png) | ![微信 zhuatech2 二维码](docs/images/wechat-zhuatech2.png) |
+
+商业授权或深度定制开发请联系知华科技。
